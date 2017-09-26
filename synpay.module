@@ -1,0 +1,52 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Заполняем адрес в профайле, нужно для комерца.
+ */
+function synapse_commerce_payment_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'customer') {
+    $array = $entity->toArray();
+    if (!(isset($array['address']) && count($array['address']))) {
+      $fio = isset($entity->field_customer_fie->value) ? $entity->field_customer_fie->value : '';
+      $city = isset($entity->field_city->value) ? $entity->field_city->value : '';
+      $house = isset($entity->field_house->value) ? $entity->field_house->value : '';
+      $room = isset($entity->field_apartment->value) ? $entity->field_apartment->value : '';
+      $address = $city . $house . $room;
+
+      $entity->address->address_line1 = $address != '' ? $address : $fio;
+      $entity->address->country_code = 'RU';
+
+      /* дополнительные поля
+      $entity->address->administrative_area = 'Vologodskaya oblast';
+      $entity->address->locality = 'test';
+      $entity->address->dependent_locality = NULL;
+      $entity->address->postal_code = '160000';
+      $entity->address->sorting_code = NULL;
+      $entity->address->address_line2 = '';
+      $entity->address->organization = '';
+      $entity->address->given_name = 'Synapse';
+      $entity->address->additional_name = NULL;
+      $entity->address->family_name = 'Synapse';
+       */
+    }
+  }
+}
+
+/**
+ * Меняем кнопку.
+ */
+function synapse_commerce_payment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'commerce_checkout_flow_multistep_default') {
+    if (isset($form['actions']['next'])) {
+      $form['actions']['next'] = [
+        '#type' => 'submit',
+        '#value' => 'Оформить заказ',
+        '#button_type' => 'primary',
+        '#submit' => ['::submitForm'],
+      ];
+    }
+  }
+}

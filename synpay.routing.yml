@@ -1,0 +1,48 @@
+synpay.choose_method:
+  path: 'synpay/choose-method'
+  defaults:
+    _controller: '\Drupal\synpay\Controller\SynapseRedirectController::chooseMethod'
+  options:
+    no_cache: TRUE
+  requirements:
+    _access: 'TRUE'
+
+synpay.robokassa_result:
+  path: '/robokassa/result'
+  defaults:
+    _controller: '\Drupal\synpay\Controller\SynapseRedirectController::result'
+    _title: 'Result'
+  requirements:
+    _permission: 'access content'
+
+synpay.robokassa_success:
+  path: '/robokassa/success'
+  defaults:
+    _controller: '\Drupal\synpay\Controller\SynapseRedirectController::success'
+    _title: 'Успешно'
+  requirements:
+    _permission: 'access content'
+
+synpay.robokassa_fail:
+  path: '/robokassa/fail'
+  defaults:
+    _controller: '\Drupal\synpay\Controller\SynapseRedirectController::fail'
+    _title: 'Отказ'
+  requirements:
+    _permission: 'access content'
+
+synpay.test:
+  path: '/robokassa/test'
+  defaults:
+    _controller: '\Drupal\synpay\Controller\SynapseRedirectController::sendPay'
+    _title: 'Test'
+  requirements:
+    _permission: 'access content'
+
+synpay.robokassa:
+  path: '/admin/config/synapse/robokassa-settings'
+  defaults:
+    _form: '\Drupal\synpay\Form\RobokassaSettings'
+    _title: 'Robokassa settings'
+  requirements:
+    _permission: 'administer nodes'

@@ -1,0 +1,4 @@
+synpay.robokassa:
+  title: 'Robokassa settings'
+  parent: system.admin_config_system
+  route_name: synpay.robokassa
